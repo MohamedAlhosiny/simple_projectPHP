@@ -26,3 +26,4 @@ foreach ($arr as $id => $hamada) {
     echo " $id => $hamada" . "<br>";
 }
 // hello main 1
+// maaaaaaaaaain 2
