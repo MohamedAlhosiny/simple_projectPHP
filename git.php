@@ -25,3 +25,4 @@ echo "<br>";
 foreach ($arr as $id => $hamada) {
     echo " $id => $hamada" . "<br>";
 }
+// hello
