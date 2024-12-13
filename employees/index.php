@@ -12,10 +12,18 @@ $select = mysqli_query($conn, $selectQuery);
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
+    // to delete image 
+    $selectoneQuery = "SELECT `image` FROM `employees` WHERE id = $id";
+    $selectone = mysqli_query($conn, $selectoneQuery);
+    $row = mysqli_fetch_assoc($selectone);
+    $old_image = $row['image'];
+
+    //====
     $deleteQuery = "DELETE FROM `employees` WHERE id = $id";
     $delete = mysqli_query($conn, $deleteQuery);
 
     if ($delete) {
+        unlink("./uploads/" . $old_image);
         path('employees/index.php');
     }
 }
@@ -32,6 +40,7 @@ if (isset($_GET['delete'])) {
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -43,6 +52,7 @@ if (isset($_GET['delete'])) {
                     <tbody>
                         <tr>
                             <td><?= $i + 1 ?></td>
+                            <td> <img width="100" src="./uploads/<?= $emp['image'] ?>" alt=""> </td>
                             <td><?= $emp['name'] ?></td>
                             <td><?= $emp['email'] ?></td>
                             <td><?= $emp['phone'] ?></td>

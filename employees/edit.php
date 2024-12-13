@@ -27,7 +27,22 @@ if (isset($_GET['edit'])) {
         $phone = $_POST['phone'];
         $salary = $_POST['salary'];
         $department = $_POST['department'];
-        $updateQuery = "UPDATE `employees` SET `name` = '$name' , `email` = '$email' , `phone` = '$phone' , `salary` = $salary , `department_id` = $department";
+        // upload image
+        if ($_FILES['image']['name']) {
+            $image_name = "FinalDemo" . "_" . time() . "_" . $_FILES['image']['name'];
+            $tmp_name = $_FILES['image']['tmp_name'];
+            $location = "./uploads/" . $image_name;
+
+            move_uploaded_file($tmp_name, $location);
+            // to remove old image in DB
+            $old_image = $row['image'];
+            unlink("./uploads/" . $old_image);
+        } else {
+            $image_name = $row['image'];
+        }
+
+
+        $updateQuery = "UPDATE `employees` SET `name` = '$name' , `email` = '$email' , `phone` = '$phone' , `salary` = $salary, `image` = '$image_name' , `department_id` = $department";
         $update = mysqli_query($conn, $updateQuery);
 
         if ($update) {
@@ -65,7 +80,7 @@ if (isset($_GET['edit'])) {
 
     <div class="card bg-dark text-light">
         <div class="card-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name:</label>
                     <input type="text" name="name" value="<?= $name ?>" id="name" placeholder="name" class="form-control">
@@ -94,6 +109,11 @@ if (isset($_GET['edit'])) {
                         <?php endforeach; ?>
 
                     </select>
+                    <div class="mb-3">
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control mb-2" name="image">
+                        <img width="200" src="./uploads/<?= $row['image'] ?>" alt="" />
+                    </div>
                 </div>
                 <div class="mb-3 text-center">
                     <button class="btn btn-warning" name="update">Update</button>
