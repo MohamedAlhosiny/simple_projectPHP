@@ -20,6 +20,7 @@ if (isset($_POST['submit'])) {
     $phone = filterString($_POST['phone']);
     $salary = filterString($_POST['salary']);
     $department_id = $_POST['department'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     if (stringValidation($name, 8)) {
         $errors[] = "name is required and must be at least 8 chars";
@@ -28,7 +29,7 @@ if (isset($_POST['submit'])) {
     if (stringValidation($email, 2)) {
         $errors[] = "email is required ";
     }
-    if (stringValidation($phone, 11)) {
+    if (stringValidation($phone, 10)) {
         $errors[] = "phone is required and must be 11 numbers ";
     }
     if (stringValidation($salary, 0)) {
@@ -47,7 +48,7 @@ if (isset($_POST['submit'])) {
     if (empty($errors)) {
 
         //insert Query====
-        $insertQuery = "INSERT INTO `employees` VALUES (NULL , '$name' , '$email' , '$phone' , $salary , '$image_name' , $department_id)";
+        $insertQuery = "INSERT INTO `employees` (id , `name` , email , phone , salary , `image` , `password` , department_id	) VALUES (NULL , '$name' , '$email' , '$phone' , $salary  ,'$image_name', '$password' , $department_id )";
         $insert = mysqli_query($conn, $insertQuery);
         if ($insert) {
             move_uploaded_file($tmp_name, $location);
@@ -92,6 +93,10 @@ if (isset($_POST['submit'])) {
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" name="email" id="email" placeholder="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" name="password" id="password" placeholder="Password" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone:</label>

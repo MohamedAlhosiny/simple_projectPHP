@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 require_once "C:/xampp/htdocs/finalDemo/app/function.php";
+session_start()
 ?>
 
 <head>
